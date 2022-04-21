@@ -1,0 +1,42 @@
+version: '3'
+services:
+  fitsync-api:
+    container_name: '${SERVICE_HOSTNAME}'
+    env_file: .env
+    volumes:
+      - './:/var/www/'
+      - './logs:/var/www/logs'
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - 'NODE_ENV=${NODE_ENV}'
+        - 'CI_JOB_TOKEN=${CI_JOB_TOKEN}'
+    ports:
+      - '${SERVICE_PORT}:${SERVICE_PORT}'
+    depends_on:
+      - fitsync-db
+      - fitsync-redis
+  fitsync-db:
+    container_name: '${LOCAL_MONGO_DB_HOST_NAME}'
+    image: 'mongo:latest'
+    restart: always
+    env_file: .env
+    volumes:
+      - './data/db:/data/db'
+    command: 'mongod --port ${LOCAL_MONGO_DB_PORT}'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: '${LOCAL_MONGO_DB_USER}'
+      MONGO_INITDB_ROOT_PASSWORD: '${LOCAL_MONGO_DB_PASSWORD}'
+      MONGO_INITDB_DATABASE: '${LOCAL_MONGO_DB_NAME}'
+    ports:
+      - '${LOCAL_MONGO_DB_PORT}:${LOCAL_MONGO_DB_PORT}'
+  fitsync-redis:
+    container_name: '${REDIS_HOST_NAME}'
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./data/redis:/data

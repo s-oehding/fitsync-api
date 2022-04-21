@@ -1,0 +1,4 @@
+@monsooq:registry=https://gitlab.com/api/v4/projects/31037770/packages/npm/
+//gitlab.com/api/v4/packages/npm/:_authToken=GITLAB_TOKEN
+//gitlab.com/api/v4/projects/31037770/packages/npm/:_authToken=GITLAB_TOKEN
+always-auth=true
