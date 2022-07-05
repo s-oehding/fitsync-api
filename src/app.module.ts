@@ -8,6 +8,7 @@ import { HealthModule } from './modules/health/health.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { ArticleModule } from './modules/article/article.module'
+import { ActivityModule } from './modules/activities/activity.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -51,7 +52,8 @@ import { ArticleModule } from './modules/article/article.module'
     HealthModule,
     UserModule,
     AuthModule,
-    ArticleModule
+    ArticleModule,
+    ActivityModule
   ],
   controllers: [],
   providers: []
